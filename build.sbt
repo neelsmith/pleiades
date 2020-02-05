@@ -1,6 +1,6 @@
 name := "Pleiades utilities"
 
-crossScalaVersions := Seq("2.10.6","2.11.8", "2.12.4")
+crossScalaVersions := Seq("2.12.4") //Seq("2.10.6","2.11.8", "2.12.4")
 
 lazy val root = project.in(file(".")).
     aggregate(crossedJVM, crossedJS).
@@ -14,7 +14,7 @@ lazy val crossed = crossProject.in(file(".")).
     settings(
       name := "pleiades",
       organization := "edu.holycross.shot",
-      version := "0.2.0",
+      version := "0.3.2",
       licenses += ("GPL-3.0",url("https://opensource.org/licenses/gpl-3.0.html")),
 
       libraryDependencies ++= Seq(
@@ -27,9 +27,9 @@ lazy val crossed = crossProject.in(file(".")).
     ).
     jsSettings(
       skip in packageJSDependencies := false,
-      persistLauncher in Compile := true,
-      persistLauncher in Test := false
+      scalaJSUseMainModuleInitializer in Compile := true
     )
-
 lazy val crossedJVM = crossed.jvm
-lazy val crossedJS = crossed.js.enablePlugins(ScalaJSPlugin)
+lazy val crossedJS = crossed.js
+//lazy val crossedJVM = crossed.jvm
+//lazy val crossedJS = crossed.js.enablePlugins(ScalaJSPlugin)
