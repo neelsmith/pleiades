@@ -5,61 +5,72 @@ import scala.io._
 import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
-case class PleiadesData(pleiadesNum : BigDecimal) extends LogSupport {
 
-  /** Base URL for Pleiades REST interface.
-  val url: String = "https://pleiades.stoa.org/places"
+/** A downloadable release of the Pleiades names data set.
+*
+* @param places A Vector of [[PleiadesPlace]] records.
 */
-
-  /** Pleiades JSON data for a Pleiades ID.
-  def json : String = {
-    val url = "https://pleiades.stoa.org/places/" + pleiadesNum + "/json"
-    Source.fromURL(url).getLines.toVector.mkString("\n")
-  }
-*/
-
-  /** Optional Point object from Pleiades data.  Will be Some(Point)
-  * if Pleiades has a parseable "reprPoint" property, or None otherwise.
-  def pointOption: Option[Point] = {
-    try {
-      val res = json
-      if (res.contains("reprP")) {
-        val filt = res.split("reprP")
-        val pt2 = filt(1).split("\n").toVector
-        val s = pt2(1) + pt2(2)
-        val v = s.replaceAll("[ ]+","").split(",").toVector
-        Some(Point(v(0).toDouble,v(1).toDouble, pleiadesNum))
-
-      } else {
-        println("No reprPoint found for " + pleiadesNum)
+case class PleiadesData(places: Vector[PleiadesPlace]) extends LogSupport {
+  def lookup(pleiadesId: BigDecimal) : Option[PleiadesPlace] = {
+    val matches = places.filter(_.pleiadesId == pleiadesId)
+    matches.size match {
+      case 1 => Some(matches(0))
+      case 0 => {
+        val msg = "No matches for id value " + pleiadesId
+        warn(msg)
         None
       }
-    } catch {
-      case e: Throwable => None
+      case n: Int => {
+        val msg = s"${n} matches for id value " + pleiadesId
+        warn(msg)
+        None
+      }
     }
-  } */
+  }
 }
 
 object PleiadesData extends LogSupport {
   Logger.setDefaultLogLevel(LogLevel.INFO)
-  /**
-  def apply(pleiadesId: String): PleiadesData = {
-    try {
-      val n = pleiadesId.toInt
-      PleiadesData(n)
 
-    } catch {
-      case e: Throwable => {
-        throw new Exception("Unable to parse PleiadesData for ID " + pleiadesId)
-      }
-    }
-  }
-*/
-  def parsePlacesFile(fName: String) : Vector[PleiadesPlace]= {
+  def parseNamesCex(fName: String) : Vector[PleiadesName]= {
     val lines = Source.fromFile(fName).getLines.toVector
     val header = lines.head
+    val data = lines.tail.filterNot(_.contains("errata"))
+    info("Parsing " + data.size + " pleiades name records.")
+    val names = for (record <- data) yield {
+      val cols = record.replaceAll("##","# #").split("#").toVector
+      val description = cols(6)
 
+      if (cols.size != 26) {
+        warn("ERROR IN INPUT LINE: " + cols.size + " columns")
+        PleiadesName(-1, "ERROR ON INPUT: " + cols)
 
+      } else {
+        if (cols(16).contains("/places") == false) {
+            warn("Ignoring bad ID value " + cols(16))
+            PleiadesName(-1, "Bad ID value: " + cols(16))
+        } else {
+          val placeName = cols(24)
+          val numeric =  cols(16).replaceAll("/places/", "")
+          debug("Interpret ID "+ numeric)
+          val id = BigDecimal(numeric)
+
+          PleiadesName(id, placeName)
+        }
+      }
+    }
+    val ok = names.filterNot(_.pleiadesId == -1)
+    info("Parsed  " + ok.size + " names records.")
+    ok
+  }
+
+  /** Parse records in a CEX-formatted dump of Pleiades places into
+  * a [[PleiadesData]] construction.
+  *
+  * @param fName Name of file with Pleiades CSV data.
+  *
+  */
+  def parsePlacesCex(lines: Vector[String]) : PleiadesData= {
     val data = lines.tail.filterNot(_.contains("errata"))
     info("Parsing " + data.size + " pleiades records.")
     val places = for (record <- data) yield {
@@ -105,6 +116,18 @@ object PleiadesData extends LogSupport {
     }
     info("Failed on " + failures.size + " records.")
     info("Successfully read " + ok.size + " records.")
-    ok
+    PleiadesData(ok)
+  }
+
+  /** Parse records in a CEX-formatted dump of Pleiades places into
+  * a [[PleiadesData]] construction.
+  *
+  * @param fName Name of file with Pleiades CSV data.
+  *
+  */
+  def parsePlacesFile(fName: String) : PleiadesData = {
+    val lines = Source.fromFile(fName).getLines.toVector
+    val header = lines.head
+    parsePlacesCex(lines.tail)
   }
 }

@@ -24,7 +24,6 @@ lazy val crossed = crossProject.in(file(".")).
       )
     ).
     jvmSettings(
-
     ).
     jsSettings(
       skip in packageJSDependencies := false,
