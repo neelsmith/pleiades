@@ -21,6 +21,8 @@ object PleiadesNames extends LogSupport {
     val data = lines.tail.filterNot(_.contains("errata"))
     info("Parsing " + data.size + " pleiades name records.")
     val names = for (record <- data) yield {
+      PleiadesName(record)
+      /*
       val cols = record.replaceAll("##","# #").split("#").toVector
       val description = cols(6)
 
@@ -40,7 +42,7 @@ object PleiadesNames extends LogSupport {
 
           PleiadesName(id, placeName)
         }
-      }
+      }*/
     }
     val ok = names.filterNot(_.pleiadesId == -1)
     info("Parsed  " + ok.size + " names records.")
