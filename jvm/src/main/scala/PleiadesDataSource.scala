@@ -12,6 +12,24 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 object PleiadesDataSource extends LogSupport {
   Logger.setDefaultLogLevel(LogLevel.INFO)
 
+
+  /** Load remote CEX data for [[PleiadesNames]] and [[PleiadesPlaces]] and
+  * create a new [[Pleiades]] collection.
+  *
+  * @param placesUrl URL for places CEX data.
+  * @param namesUrl URL for names CEX data.
+  */
+  def loadFromUrls(
+    placesUrl: String = "https://raw.githubusercontent.com/neelsmith/pleiades/master/jvm/src/test/resources/pleiades-places-20200129.cex",
+    namesUrl: String = "https://raw.githubusercontent.com/neelsmith/pleiades/master/jvm/src/test/resources/pleiades-names-20200205.cex"
+  ): Pleiades = {
+    info("Loading Pleiades place data...")
+    val places = parsePlacesUrl(placesUrl)
+    info("Loading Pleiades name data...")
+    val names = parseNamesUrl(namesUrl)
+    Pleiades(places, names)
+  }
+
   /** Parse CEX-formatted dump of Pleiades project names data.
   *
   * @param url URL to download data from.

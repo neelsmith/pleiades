@@ -17,5 +17,10 @@ class PleiadesDataSourceSpec extends FlatSpec {
     val namesMap = PleiadesDataSource.parseNamesFile(pleiadesNamesCex)
   }
 
+  it should "load data for Pleiades collection from default sources" in {
+    val pleiades = PleiadesDataSource.loadFromUrls()
+
+  }
+
 
 }
