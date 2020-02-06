@@ -39,30 +39,13 @@ object PleiadesNames extends LogSupport {
     info("Parsing " + data.size + " pleiades name records.")
     val names = for (record <- data) yield {
       PleiadesName(record)
-      /*
-      val cols = record.replaceAll("##","# #").split("#").toVector
-      val description = cols(6)
-
-      if (cols.size != 26) {
-        warn("ERROR IN INPUT LINE: " + cols.size + " columns")
-        PleiadesName(-1, "ERROR ON INPUT: " + cols)
-
-      } else {
-        if (cols(16).contains("/places") == false) {
-            warn("Ignoring bad ID value " + cols(16))
-            PleiadesName(-1, "Bad ID value: " + cols(16))
-        } else {
-          val placeName = cols(24)
-          val numeric =  cols(16).replaceAll("/places/", "")
-          debug("Interpret ID "+ numeric)
-          val id = BigDecimal(numeric)
-
-          PleiadesName(id, placeName)
-        }
-      }*/
     }
     val ok = names.filterNot(_.pleiadesId == -1)
-    info("Parsed  " + ok.size + " names records.")
+    val bad = names.filter(_.pleiadesId == -1)
+    if (bad.nonEmpty) {
+      info("Failed on " + bad.size + " records.")
+    }
+    info("Successfully parsed  " + ok.size + " names records.")
     PleiadesNames(ok)
   }
 }

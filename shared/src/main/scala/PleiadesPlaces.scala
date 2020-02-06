@@ -59,8 +59,10 @@ object PleiadesPlaces extends LogSupport {
     for (f <- failures) {
       warn("Failed on " + f.description)
     }
-    info("Failed on " + failures.size + " records.")
-    info("Successfully read " + ok.size + " records.")
+    if (failures.nonEmpty){
+      info("Failed on " + failures.size + " records.")
+    }
+    info("Successfully parsed " + ok.size + " places records.")
     PleiadesPlaces(ok)
   }
 
