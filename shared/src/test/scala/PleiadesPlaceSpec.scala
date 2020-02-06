@@ -3,16 +3,16 @@ package edu.holycross.shot.pleiades
 import org.scalatest.FlatSpec
 
 
-/*
-authors#bbox#created#creators#currentVersion#description#extent#id#locationPrecision#maxDate#minDate#modified#nameAttested#nameLanguage#nameTransliterated#path#pid#reprLat#reprLatLong#reprLong#tags#timePeriods#timePeriodsKeys#timePeriodsRange#title#uid
-Spann, P., R. Warner, R. Talbert, T. Elliott, S. Gillies#-3.606772, 39.460299, -3.606772, 39.460299#2010-09-24T19:02:22Z#P.O. Spann###{"type": "Point", "coordinates": [-3.606772, 39.460299]}#consabura#precise#640#-330#2011-09-05T20:57:22Z###Consabura#/places/265876/consabura#/places/265876#39.460299#39.460299,-3.606772#-3.606772##HRL#hellenistic-republican,roman,late-antique#-330.0,640.0#Consabura#fc0ee157ff11ce6d2e72cd7c5df06fee
-Spann, P., R. Warner, R. Talbert, T. Elliott, S. Gillies#-3.606772, 39.460299, -3.606772, 39.460299#2010-09-24T19:02:22Z#P.O. Spann###{"type": "Point", "coordinates": [-3.606772, 39.460299]}#consabrum#precise#640#-330#2011-09-05T20:57:22Z###Consabrum#/places/265876/consabrum#/places/265876#39.460299#39.460299,-3.606772#-3.606772##HRL#hellenistic-republican,roman,late-antique#
-*/
-//Painter,Beazley Number, Musuem ID, Shape, Find-spot, Comments, Geography
-
 
 class PleiadesPlaceSpec extends FlatSpec {
 
+  val cex = """Becker, J., T. Elliott#13.4119837, 42.082885, 13.4119837, 42.082885#413005#2016-11-04T16:36:09Z#jbecker, thomase#1#The post-Roman settlement at Alba Fucens became an administrative center ca. A.D. 870 and remained significant as a center in Marsica until ca. 1143. The area was later subsumed by the Duchy of Spoleto.#{"type": "Point", "coordinates": [13.4119837, 42.082885]}#settlement###48210385#precise#1453#640#2016-11-08T21:58:28Z#/places/48210385#42.082885#42.082885,13.4119837#13.4119837##M#mediaeval-byzantine#640.0,1453.0#Borgo Medievale#ece5760c4c6d42c1a331aad543c4ecc4"""
 
-  "A PleiadesPlace" should "dumpity dum" in  pending
+  "A PleiadesPlace" should "be constructable from cex" in  {
+    val place = PleiadesPlace(cex)
+    place match {
+      case plc: PleiadesPlace => assert(true)
+      case _ => fail("Did not create a PleiadesPlace from cex.")
+    }
+  }
 }

@@ -9,7 +9,7 @@ class PleiadesDataSourceSpec extends FlatSpec {
 
   val pleiadesNamesCex = "jvm/src/test/resources/pleiades-names-20200205.cex"
 
-  "The PleiadesData object"  should "parse Pleiades places dump" in {
+  "The PleiadesPlaces object"  should "parse Pleiades places dump" in {
     val parsed = PleiadesDataSource.parsePlacesFile(pleiadesPlacesCex)
   }
 

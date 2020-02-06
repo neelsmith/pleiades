@@ -24,25 +24,25 @@ object PleiadesDataSource extends LogSupport {
 
 
   /** Parse records in a CEX-formatted dump of Pleiades places into
-  * a [[PleiadesData]] construction.
+  * a [[PleiadesPlaces]] construction.
   *
   * @param url Name of file with Pleiades CSV data.
   *
   */
-  def parsePlacesUrl(url: String) : PleiadesData = {
+  def parsePlacesUrl(url: String) : PleiadesPlaces = {
     val lines = Source.fromURL(url).getLines.toVector
-    PleiadesData.parsePlacesCex(lines.tail)
+    PleiadesPlaces.parsePlacesCex(lines.tail)
   }
 
 
   /** Parse records in a CEX-formatted dump of Pleiades places into
-  * a [[PleiadesData]] construction.
+  * a [[PleiadesPlaces]] construction.
   *
   * @param fName Name of file with Pleiades CSV data.
   *
   */
-  def parsePlacesFile(fName: String) : PleiadesData = {
+  def parsePlacesFile(fName: String) : PleiadesPlaces = {
     val lines = Source.fromFile(fName).getLines.toVector
-    PleiadesData.parsePlacesCex(lines.tail)
+    PleiadesPlaces.parsePlacesCex(lines.tail)
   }
 }
