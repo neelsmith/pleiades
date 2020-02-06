@@ -13,7 +13,7 @@ import scala.scalajs.js.annotation._
 *
 * @param places A Vector of [[PleiadesPlace]] records.
 */
-@JSExportTopLevel("PleiadesData") case class PleiadesData(places: Vector[PleiadesPlace]) extends LogSupport {
+@JSExportTopLevel("PleiadesPlaces") case class PleiadesPlaces(places: Vector[PleiadesPlace]) extends LogSupport {
 
   /** Retrieve a single PleiadesPlace record by Id, or None
   * if not found.
@@ -38,21 +38,21 @@ import scala.scalajs.js.annotation._
   }
 }
 
-object PleiadesData extends LogSupport {
+object PleiadesPlaces extends LogSupport {
   Logger.setDefaultLogLevel(LogLevel.INFO)
 
   /** Parse records in a CEX-formatted dump of Pleiades places into
-  * a [[PleiadesData]] construction.
+  * a [[PleiadesPlaces]] construction.
   *
   * @param fName Name of file with Pleiades CSV data.
   *
   */
-  def parsePlacesCex(lines: Vector[String]) : PleiadesData= {
+  def parsePlacesCex(lines: Vector[String]) : PleiadesPlaces= {
     val data = lines.tail.filterNot(_.contains("errata"))
     info("Parsing " + data.size + " pleiades place records.")
 
     val places = for (record <- data) yield {
-      PleiadesPlace(record) 
+      PleiadesPlace(record)
     }
     val ok = places.filterNot(_.pleiadesId == -1)
     val failures = places.filter(_.pleiadesId == -1)
@@ -61,7 +61,7 @@ object PleiadesData extends LogSupport {
     }
     info("Failed on " + failures.size + " records.")
     info("Successfully read " + ok.size + " records.")
-    PleiadesData(ok)
+    PleiadesPlaces(ok)
   }
 
 }

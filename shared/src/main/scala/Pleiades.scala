@@ -12,7 +12,7 @@ import scala.scalajs.js.annotation._
 * @param places A Vector of [[PleiadesPlace]] records.
 */
 @JSExportTopLevel("Pleiades") case class Pleiades(
-  places: PleiadesData,
+  places: PleiadesPlaces,
   names: PleiadesNames
 ) extends LogSupport {
 }
