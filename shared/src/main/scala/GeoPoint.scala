@@ -1,10 +1,12 @@
 package edu.holycross.shot.pleiades
 
 
-import scala.scalajs.js
-import js.annotation.JSExport
+import scala.scalajs.js.annotation._
 
-@JSExport case class GeoPoint(x: BigDecimal, y: BigDecimal) {
+
+
+@JSExportTopLevel("GeoPoint")
+case class GeoPoint(x: BigDecimal, y: BigDecimal) {
 
   override def toString = {
     x.toString + "," + y.toString

@@ -1,10 +1,10 @@
 package edu.holycross.shot.pleiades
 
 
-import scala.scalajs.js
-import js.annotation.JSExport
 
-@JSExport case class PleiadesPlace(pleiadesId: BigDecimal, description: String, pointOption: Option[GeoPoint]) {
+import scala.scalajs.js.annotation._
+
+@JSExportTopLevel("PleiadesPlace") case class PleiadesPlace(pleiadesId: BigDecimal, description: String, pointOption: Option[GeoPoint]) {
 
 
 }

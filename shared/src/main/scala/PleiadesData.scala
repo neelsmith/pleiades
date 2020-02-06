@@ -4,11 +4,16 @@ import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 
+
+
+import scala.scalajs.js.annotation._
+
+
 /** A downloadable release of the Pleiades names data set.
 *
 * @param places A Vector of [[PleiadesPlace]] records.
 */
-case class PleiadesData(places: Vector[PleiadesPlace]) extends LogSupport {
+@JSExportTopLevel("PleiadesData") case class PleiadesData(places: Vector[PleiadesPlace]) extends LogSupport {
   def lookup(pleiadesId: BigDecimal) : Option[PleiadesPlace] = {
     val matches = places.filter(_.pleiadesId == pleiadesId)
     matches.size match {
