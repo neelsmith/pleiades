@@ -14,6 +14,12 @@ import scala.scalajs.js.annotation._
 * @param places A Vector of [[PleiadesPlace]] records.
 */
 @JSExportTopLevel("PleiadesData") case class PleiadesData(places: Vector[PleiadesPlace]) extends LogSupport {
+
+  /** Retrieve a single PleiadesPlace record by Id, or None
+  * if not found.
+  *
+  * @param pleiadesId Pleiades ID number for record to look up.
+  */
   def lookup(pleiadesId: BigDecimal) : Option[PleiadesPlace] = {
     val matches = places.filter(_.pleiadesId == pleiadesId)
     matches.size match {
@@ -43,7 +49,7 @@ object PleiadesData extends LogSupport {
   */
   def parsePlacesCex(lines: Vector[String]) : PleiadesData= {
     val data = lines.tail.filterNot(_.contains("errata"))
-    info("Parsing " + data.size + " pleiades records.")
+    info("Parsing " + data.size + " pleiades place records.")
     val places = for (record <- data) yield {
       val cols = record.replaceAll("##","# #").split("#").toVector
       val description = cols(6)

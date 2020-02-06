@@ -14,7 +14,7 @@ class PleiadesDataSourceSpec extends FlatSpec {
   }
 
   it should "parse a map of names to pleiades IDs" in {
-    val namesMap = PleiadesDataSource.parseNamesCex(pleiadesNamesCex)
+    val namesMap = PleiadesDataSource.parseNamesFile(pleiadesNamesCex)
   }
 
 
