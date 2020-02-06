@@ -5,8 +5,25 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 import scala.scalajs.js.annotation._
 
-@JSExportTopLevel("PleiadesNames") case class PleiadesNames(places: Vector[PleiadesName]) extends LogSupport {
+@JSExportTopLevel("PleiadesNames") case class PleiadesNames(names: Vector[PleiadesName]) extends LogSupport {
 
+  /** Find (possibly empty) list of transcribed names
+  * associated with a given Pleiades ID value.
+  *
+  * @param id ID value to look up.
+  */
+  def lookup(id: BigDecimal): Vector[String] = {
+    names.filter(_.pleiadesId == id).map(_.name)
+  }
+
+  /** Find (possibly empty) list of Pleiades IDs
+  * matching a given name.
+  *
+  * @param s Name to match.
+  */
+  def idsForName(s: String) : Vector[BigDecimal] = {
+    names.filter(_.name == s).map(_.pleiadesId)
+  }
 
 }
 
