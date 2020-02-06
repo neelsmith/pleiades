@@ -14,4 +14,17 @@ class PleiadesNameSpec extends FlatSpec {
       case _ => fail("Did not create a PleiadesName from cex.")
     }
   }
+
+  it should "have an ID value" in {
+    val plName = PleiadesName(cex)
+    val expected = BigDecimal("265876")
+    assert(plName.pleiadesId == expected)
+  }
+  it should "have a name String" in {
+    val plName = PleiadesName(cex)
+    println("NAME: " + plName.name)
+    val expected = "Consabura"
+
+    assert(plName.name == expected)
+  }
 }

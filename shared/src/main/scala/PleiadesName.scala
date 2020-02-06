@@ -7,12 +7,22 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 import scala.scalajs.js.annotation._
 
+/** Association of a Pleiades ID number with a name value.
+* Note that this is a many<->many relation.
+*
+* @param pleiadesId ID number for a Pleiades place.
+* @param name Transcription of one form of a name for the given place.
+*/
 @JSExportTopLevel("PleiadesName") case class PleiadesName(pleiadesId: BigDecimal, name: String) extends LogSupport {
 
 }
 
 object PleiadesName extends LogSupport {
 
+  /** Create a PleiadesName object from a single delimited-text record.
+  *
+  * @param delimitedText Single record for a Pleiades name in delimited-text format.
+  */
   def apply(delimitedText: String) : PleiadesName = {
     val cols = delimitedText.replaceAll("##","# #").split("#").toVector
     val description = cols(6)

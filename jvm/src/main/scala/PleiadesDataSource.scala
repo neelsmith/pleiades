@@ -7,16 +7,24 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 
 
-
+/** Factory object for creating [[PleiadesNames]] and
+* [[PleiadesPlaces]] objects from various delimited-text sources. */
 object PleiadesDataSource extends LogSupport {
   Logger.setDefaultLogLevel(LogLevel.INFO)
 
-
+  /** Parse CEX-formatted dump of Pleiades project names data.
+  *
+  * @param url URL to download data from.
+  */
   def parseNamesUrl(url: String) : PleiadesNames = {
     val lines = Source.fromURL(url).getLines.toVector
     PleiadesNames.parseNamesCex(lines)
   }
 
+  /** Parse CEX-formatted dump of Pleiades project names data.
+  *
+  * @param fName Name of file with delimited-text data.
+  */
   def parseNamesFile(fName: String) : PleiadesNames = {
     val lines = Source.fromFile(fName).getLines.toVector
     PleiadesNames.parseNamesCex(lines)

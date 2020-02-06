@@ -12,6 +12,6 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 case class GeoPoint(x: BigDecimal, y: BigDecimal) extends LogSupport {
 
   override def toString = {
-    x.toString + "," + y.toString
+    x.toString.trim + "," + y.toString.trim
   }
 }
